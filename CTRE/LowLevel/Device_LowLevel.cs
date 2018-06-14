@@ -22,8 +22,6 @@ namespace CTRE.Phoenix.LowLevel
         UInt32 kParamArbIdValue;
         UInt32 kParamArbIdMask;
 
-        //UInt64 _cache;
-        //UInt32 _len;
         UInt32 _can_h = 0;
         int _can_stat = 0;
 
@@ -163,8 +161,8 @@ namespace CTRE.Phoenix.LowLevel
         }
 
         /**
- * Helpful routine for child classes to report too-old firm
- */
+         * Helpful routine for child classes to report too-old firm
+         */
         internal void CheckFirmVers(int minMajor, int minMinor, ErrorCode failCode)
         {
             /* get the firm vers */
@@ -244,7 +242,6 @@ namespace CTRE.Phoenix.LowLevel
 
         private void ProcessStreamMessages()
         {
-            if (0 == _can_h) { OpenSessionIfNeedBe(); }
             /* process receive messages */
             UInt32 i;
             UInt32 messagesRead = 0;
@@ -258,7 +255,7 @@ namespace CTRE.Phoenix.LowLevel
             {
                 CTRE.Native.CAN.GetStreamSize(_can_h, ref messagesRead);
             }
-            /* loop thru each message of interest */
+            /* loop through each message of interest */
             for (i = 0; i < messagesRead; ++i)
             {
                 CTRE.Native.CAN.ReadStream(_can_h, ref arbId, ref data, ref len, ref msgsRead);
@@ -314,8 +311,6 @@ namespace CTRE.Phoenix.LowLevel
             /* splits */
             byte btnParamEnum_h8 = (byte)((int)paramEnum >> 4);
             byte btnParamEnum_l4 = (byte)((int)paramEnum & 0xF);
-            /* caller is using param API.  Open session if it hasn'T been done. */
-            if (0 == _can_h) OpenSessionIfNeedBe();
             /* wait for response frame */
             if (timeoutMs != 0)
             {
@@ -345,12 +340,16 @@ namespace CTRE.Phoenix.LowLevel
             frame |= (byte)((btnParamEnum_l4 << 4) | ordinal);// b1
             frame <<= 8;
             frame |= btnParamEnum_h8;// b0
+
             /* send it */
             uint arbId = PARAM_SET | GetDeviceNumber();
             int status = CTRE.Native.CAN.Send(arbId, frame, 8, 0);
             /* wait for response frame */
             if (timeoutMs > 0)
             {
+                /* Open CAN Stream */
+                if (0 == _can_h) { OpenSessionIfNeedBe(); }
+
                 int readBits;
                 /* loop until timeout or receive if caller wants to check */
                 while (timeoutMs > 0)
@@ -363,9 +362,17 @@ namespace CTRE.Phoenix.LowLevel
                     /* decrement */
                     --timeoutMs;
                 }
+                /* Close CAN Stream */
+                CTRE.Native.CAN.CloseStream(_can_h);
+                _can_h = 0;
+
                 /* if we get here then we timed out */
-                if (timeoutMs == 0)
-                    status = (int)ErrorCode.SIG_NOT_UPDATED;
+                if (timeoutMs == 0) { 
+                    /* No Errorcode set far, but we timeout */
+                    if (status == 0)
+                        status = (int)ErrorCode.SIG_NOT_UPDATED;
+                    /* Else we received some other errorCode */
+                }
             }
             return (ErrorCode)status;
         }

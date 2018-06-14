@@ -12,31 +12,23 @@ namespace CTRE.Phoenix.LowLevel
      */
     public enum ParamEnum
     {
-
-        // SelectedFeedbackDevice
-        // SensorPhase
-        // open loop RampThrottle
-        // FeedbackDevIsContinuous
-
-        eOnBoot_BrakeMode = 31,
         eQuadFilterEn = 91,
         eQuadIdxPolarity = 108,
-        eClearPositionOnIdx = 100,
         eMotionProfileHasUnderrunErr = 119,
         eMotionProfileTrajectoryPointDurationMs = 120,
-        eClearPosOnLimitF = 144,
-        eClearPosOnLimitR = 145,
 
         eStatusFramePeriod = 300,
         eOpenloopRamp = 301,
         eClosedloopRamp = 302,
         eNeutralDeadband = 303,
 
+        /** Peak and Nominal Output */
         ePeakPosOutput = 305,
         eNominalPosOutput = 306,
         ePeakNegOutput = 307,
         eNominalNegOutput = 308,
 
+        /** PID Configuration */
         eProfileParamSlot_P = 310,
         eProfileParamSlot_I = 311,
         eProfileParamSlot_D = 312,
@@ -50,28 +42,33 @@ namespace CTRE.Phoenix.LowLevel
         eClearPositionOnLimitR = 321,
         eClearPositionOnQuadIdx = 322,
 
+        /** Velocity Averaging */
         eSampleVelocityPeriod = 325,
         eSampleVelocityWindow = 326,
 
-        eFeedbackSensorType = 330, // feedbackDevice_t
+        /** Sensor Configuration */
+        eFeedbackSensorType = 330,      // feedbackDevice_t
         eSelectedSensorPosition = 331,
         eFeedbackNotContinuous = 332,
-        eRemoteSensorSource = 333, // RemoteSensorSource_t
-        eRemoteSensorDeviceID = 334, // [0,62] DeviceID
-        eSensorTerm = 335, // feedbackDevice_t (ordinal is the register)
+        eRemoteSensorSource = 333,      // RemoteSensorSource_t
+        eRemoteSensorDeviceID = 334,    // [0,62] DeviceID
+        eSensorTerm = 335,              // feedbackDevice_t (ordinal is the register)
         eRemoteSensorClosedLoopDisableNeutralOnLOS = 336,
         ePIDLoopPolarity = 337,
         ePIDLoopPeriod = 338,
         eSelectedSensorCoefficient = 339,
 
+        /** Soft Limits */
         eForwardSoftLimitThreshold = 340,
         eReverseSoftLimitThreshold = 341,
         eForwardSoftLimitEnable = 342,
         eReverseSoftLimitEnable = 343,
 
+        /** Voltage Compensation */
         eNominalBatteryVoltage = 350,
         eBatteryVoltageFilterSize = 351,
 
+        /** Current Limit */
         eContinuousCurrentLimitAmps = 360,
         ePeakCurrentLimitMs = 361,
         ePeakCurrentLimitAmps = 362,
@@ -82,22 +79,27 @@ namespace CTRE.Phoenix.LowLevel
 
         eStickyFaults = 390,
 
+        /** Encoder Position */
         eAnalogPosition = 400,
         eQuadraturePosition = 401,
         ePulseWidthPosition = 402,
 
+        /** Motion Magic */
         eMotMag_Accel = 410,
         eMotMag_VelCruise = 411,
 
-        eLimitSwitchSource = 421, // ordinal (fwd=0,reverse=1), @see LimitSwitchSource_t
+        /** Limit Switches */
+        eLimitSwitchSource = 421,           // ordinal (fwd=0,reverse=1), @see LimitSwitchSource_t
         eLimitSwitchNormClosedAndDis = 422, // ordinal (fwd=0,reverse=1). @see LimitSwitchNormClosedAndDis_t
         eLimitSwitchDisableNeutralOnLOS = 423,
         eLimitSwitchRemoteDevID = 424,
         eSoftLimitDisableNeutralOnLOS = 425,
 
+        /** PWM Encoder */
         ePulseWidthPeriod_EdgesPerRot = 430,
         ePulseWidthPeriod_FilterWindowSz = 431,
 
+        /** Pigeon */
         eYawOffset = 160,
         eCompassOffset = 161,
         eBetaGain = 162,
@@ -117,72 +119,6 @@ namespace CTRE.Phoenix.LowLevel
         eMotionMeas_shake_reject_thresh = 178,
         eMotionMeas_shake_reject_time = 179,
         eMotionMeas_shake_reject_timeout = 180,
-
-#if false //Pre-Phoenix params
-        eProfileParamSlot_P = 2,
-        eProfileParamSlot_I = 3,
-        eProfileParamSlot_D = 4,
-        eProfileParamSlot_F = 5,
-        eProfileParamSlot_IZone = 6,
-        eProfileParamSlot_AllowableClosedLoopErr = 111,
-        eProfileParamSlot1_AllowableClosedLoopErr = 117,
-
-        eProfileParamSoftLimitForThreshold = 21,
-        eProfileParamSoftLimitRevThreshold = 22,
-        eProfileParamSoftLimitForEnable = 23,
-        eProfileParamSoftLimitRevEnable = 24,
-        eOnBoot_BrakeMode = 31,
-        eOnBoot_LimitSwitch_Forward_NormallyClosed = 32,
-        eOnBoot_LimitSwitch_Reverse_NormallyClosed = 33,
-        eOnBoot_LimitSwitch_Forward_Disable = 34,
-        eOnBoot_LimitSwitch_Reverse_Disable = 35,
-
-        eRevMotDuringCloseLoopEn = 64,
-        eRevFeedbackSensor = 68,
-   
-        eRampThrottle = 67,
-        eLimitSwitchEn = 69,
-        eLimitSwitchClosedFor = 70,
-        eLimitSwitchClosedRev = 71,
-        eBrakeIsEnabled = 76,
-        eQuadFilterEn = 91,
-        eClearPositionOnIdx = 100,
-
-        //ePeakPosOutput = 104,
-        //eNominalPosOutput = 105,
-        //ePeakNegOutput = 106,
-        //eNominalNegOutput = 107,
-        eQuadIdxPolarity = 108,
-      
-        eAllowPosOverflow = 110,
-        eNumberPotTurns = 112,
-        eNumberEncoderCPR = 113,
-
-        eProfileParamVcompRate = 116,
-        
-        eMotMag_Accel = 122,
-        eMotMag_VelCruise = 123,
-        
-        eCurrentLimThreshold = 125,
-        eCustomParam = 137,
-        ePersStorageSaving = 139,
-
-        eClearPositionOnLimitF = 144,
-        eClearPositionOnLimitR = 145,
-        eNominalBatteryVoltage = 146,
-        eSampleVelocityPeriod = 147,
-        eSampleVelocityWindow = 148,
-
-        eMotionProfileHasUnderrunErr = 119,
-        eEncPosition = 77,
-        eSensorPosition = 73,
-
-        ePwdPosition = 114,
-        eEncIndexRiseEvents = 79,
-        ePidIaccum = 93,
-        eCustomParam0 = 137,
-        eCustomParam1 = 138,
-#endif
     };
 
     public static class MotionProf_DurationMs
